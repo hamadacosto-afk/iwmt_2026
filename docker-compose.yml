@@ -1,0 +1,9 @@
+services:
+  # iwmt-apps/api
+  apps-api:
+    build:
+      context: .
+      dockerfile: ./apps/api/Dockerfile
+    image: apps-api
+    ports:
+      - "8000:8000"

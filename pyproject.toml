@@ -1,0 +1,60 @@
+[project]
+name = "iwmt"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "aiohttp>=3.13.2",
+    "diskcache>=5.6.3",
+    "dynaconf>=3.2.12",
+    "firebase-admin>=7.1.0",
+    "fireo>=1.3.4",
+    "geopy>=2.4.1",
+    "numpy>=2.4.0",
+    "openmeteo-requests>=1.7.4",
+    "pandas>=2.3.3",
+    "pulp>=3.3.0",
+    "pydantic>=2.12.5",
+    "rasterio>=1.4.4",
+    "requests-cache>=1.2.1",
+    "retry-requests>=2.0.0",
+    "uvicorn[standard]>=0.40.0",
+]
+
+
+[build-system]
+requires = ["uv_build>=0.9.18,<0.10.0"]
+build-backend = "uv_build"
+
+[tool.uv.workspace]
+members = [
+    "packages/agromath",
+    "packages/constants",
+    "apps/api",
+    "packages/utils",
+]
+
+[dependency-groups]
+dev = [
+    "poethepoet>=0.39.0",
+]
+test = [
+    "poethepoet>=0.39.0",
+]
+
+
+
+[tool.uv]
+package = false  # This prevents uv from trying to build the root as a package
+
+
+# Define the individual dev commands
+[tool.poe.tasks]
+"dev:apps-api" = "uv run --package api fastapi dev apps/api/main.py"
+"prod:apps-api" = "uv run --package api fastapi run apps/api/main.py"
+"test:packages-agromath" = "python -m unittest discover -s packages/agromath/src/agromath -p 'test_*.py'"
+
+# Define the concurrent task
+dev = { parallel = ["dev:apps-api"] }
+test = { parallel = ["test:packages-agromath"] }

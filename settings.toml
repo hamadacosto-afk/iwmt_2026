@@ -1,0 +1,6 @@
+[development]
+LOG_LEVEL = "DEBUG"
+
+
+[production]
+LOG_LEVEL = "WARNING"
